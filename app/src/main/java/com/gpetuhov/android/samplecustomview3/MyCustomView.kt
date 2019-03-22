@@ -141,5 +141,11 @@ class MyCustomView : View {
             invalidate()
         }
         animator?.start()
+
+        // Several animators can be played sequentially by using AnimatorSet like this
+//        AnimatorSet animatorSet = AnimatorSet()
+//        List<Animator> animatorList = ... //collection of ValueAnimator
+//        animatorSet.playSequentially(animatorList)
+//        animatorSet.start()
     }
 }
