@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         animateToLog.setOnClickListener { animateToLog() }
+        circleButton.setOnClickListener { myCustomView.animateToCircle() }
     }
 
     private fun animateToLog() {

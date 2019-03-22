@@ -22,4 +22,11 @@
             android:layout_marginTop="16dp"
             android:text="Animage to log"/>
 
+    <Button
+            android:id="@+id/circleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Circle"/>
+
 </LinearLayout>

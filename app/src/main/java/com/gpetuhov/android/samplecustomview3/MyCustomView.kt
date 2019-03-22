@@ -1,5 +1,6 @@
 package com.gpetuhov.android.samplecustomview3
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.os.Build
@@ -9,6 +10,7 @@ import androidx.annotation.RequiresApi
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import timber.log.Timber
 
 
 class MyCustomView : View {
@@ -62,5 +64,15 @@ class MyCustomView : View {
             radius.toFloat(),
             paint
         )
+    }
+
+    fun animateToCircle() {
+        val animator = ValueAnimator.ofInt(0, 150)
+        animator?.duration = 2000
+        animator?.addUpdateListener { animation ->
+            radius = animation.animatedValue as Int
+            invalidate()
+        }
+        animator?.start()
     }
 }
