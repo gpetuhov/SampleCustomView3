@@ -11,8 +11,8 @@
 
     <com.gpetuhov.android.samplecustomview3.MyCustomView
             android:id="@+id/myCustomView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             app:square_color="@color/colorPrimary"/>
 
     <Button
