@@ -11,8 +11,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.animation.PropertyValuesHolder
-
-
+import android.os.Bundle
+import android.os.Parcelable
 
 
 class MyCustomView : View {
@@ -20,6 +20,7 @@ class MyCustomView : View {
     companion object {
         const val PROPERTY_RADIUS = "propertyRadius"
         const val PROPERTY_ROTATE = "propertyRotate"
+        const val SUPER_STATE = "superState"
     }
 
     private var paint = Paint(ANTI_ALIAS_FLAG)
@@ -82,6 +83,36 @@ class MyCustomView : View {
         )
     }
 
+    // Save state
+    override fun onSaveInstanceState(): Parcelable? {
+        return if (animator?.isRunning == true) {
+            // If animator is running, do not save state
+            super.onSaveInstanceState()
+        } else {
+            // Otherwise save current rotate and radius
+            val bundle = Bundle()
+            // When saving view state we MUST save super state
+            bundle.putParcelable(SUPER_STATE, super.onSaveInstanceState())
+            bundle.putInt(PROPERTY_RADIUS, radius)
+            bundle.putInt(PROPERTY_ROTATE, rotate)
+            bundle
+        }
+    }
+
+    // Restore state
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        var superState = state
+
+        if (state != null && state is Bundle) {
+            radius = state.getInt(PROPERTY_RADIUS, 0)
+            rotate = state.getInt(PROPERTY_ROTATE, 0)
+            // We MUST restore super state
+            superState = state.getParcelable(SUPER_STATE)
+        }
+
+        super.onRestoreInstanceState(superState)
+    }
+
     fun animateToCircle() {
         // Do nothing if animator is already running
         if (animator?.isRunning == true) {
@@ -98,6 +129,9 @@ class MyCustomView : View {
         animator?.setValues(propertyRadius, propertyRotate)
 
         animator?.duration = 2000
+
+        // Notice that animator has AccelerateDecelerateInterpolator as the default interpolator
+
         animator?.addUpdateListener { animation ->
             // Get current value of the animated properties
             radius = animation.getAnimatedValue(PROPERTY_RADIUS) as Int
