@@ -10,13 +10,13 @@ import androidx.annotation.RequiresApi
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
-import timber.log.Timber
 
 
 class MyCustomView : View {
 
     private var paint = Paint(ANTI_ALIAS_FLAG)
     private var radius = 0
+    private var animator: ValueAnimator? = null
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -67,7 +67,12 @@ class MyCustomView : View {
     }
 
     fun animateToCircle() {
-        val animator = ValueAnimator.ofInt(0, 150)
+        // Do nothing if animator is already running
+        if (animator?.isRunning == true) {
+            return
+        }
+
+        animator = ValueAnimator.ofInt(0, 150)
         animator?.duration = 2000
         animator?.addUpdateListener { animation ->
             radius = animation.animatedValue as Int
