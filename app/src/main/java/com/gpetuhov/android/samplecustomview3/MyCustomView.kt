@@ -9,15 +9,12 @@ import androidx.annotation.RequiresApi
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
-import android.graphics.Rect
 
 
 class MyCustomView : View {
 
     private var paint = Paint(ANTI_ALIAS_FLAG)
-    private var rect = Rect()
-    private var squareColor = Color.MAGENTA
-    private var padding = 0
+    private var radius = 0
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -39,8 +36,7 @@ class MyCustomView : View {
     private fun init(attrs: AttributeSet?) {
         if (attrs != null) {
             val attributesArray = context.obtainStyledAttributes(attrs, R.styleable.MyCustomView)
-            squareColor = attributesArray?.getColor(R.styleable.MyCustomView_square_color, Color.GREEN) ?: Color.GREEN
-            paint.color = squareColor
+            paint.color = attributesArray?.getColor(R.styleable.MyCustomView_square_color, Color.GREEN) ?: Color.GREEN
             attributesArray.recycle()
         }
     }
@@ -48,11 +44,23 @@ class MyCustomView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        rect.left = 0 + padding
-        rect.right = width - padding
-        rect.top = 0 + padding
-        rect.bottom = height - padding
+        val viewWidth = width / 2
+        val viewHeight = height / 2
 
-        canvas?.drawRect(rect, paint)
+        val leftTopX = viewWidth - 150
+        val leftTopY = viewHeight - 150
+
+        val rightBotX = viewWidth + 150
+        val rightBotY = viewHeight + 150
+
+        canvas?.drawRoundRect(
+            leftTopX.toFloat(),
+            leftTopY.toFloat(),
+            rightBotX.toFloat(),
+            rightBotY.toFloat(),
+            radius.toFloat(),
+            radius.toFloat(),
+            paint
+        )
     }
 }
